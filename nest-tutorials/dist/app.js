@@ -10,18 +10,56 @@ app.use(function (req, res, next) {
     console.log("this is Mid");
     next();
 });
-app.get('/cats/som', function (req, res, next) {
-    console.log("this is Som Mid");
-    next();
+app.use(express.json());
+app.post('/cat', function (req, res) {
+    try {
+        var data_1 = req.body;
+        console.log(data_1);
+        app_model_1.Cat.push(data_1);
+        res.status(200).send({
+            success: true,
+            data: { data: data_1 }
+        });
+    }
+    catch (e) {
+    }
 });
-app.get('/', function (req, res) {
-    res.send({ cats: app_model_1.Cat });
+app.get('/cats', function (req, res) {
+    try {
+        var cats = app_model_1.Cat;
+        res.status(200).send({
+            success: true,
+            data: {
+                cats: cats,
+            },
+        });
+    }
+    catch (error) {
+        res.status(400).send({
+            success: false,
+            error: error.message,
+        });
+    }
 });
-app.get('/cats/blue', function (req, res, next) {
-    res.send({ blue: app_model_1.Cat[0] });
-});
-app.get('/cats/som', function (req, res) {
-    res.send({ som: app_model_1.Cat[1] });
+app.get('/cats/:id', function (req, res) {
+    try {
+        var id_1 = req.params.id;
+        var cat = app_model_1.Cat.find(function (cat) {
+            return cat.id === id_1;
+        });
+        res.status(200).send({
+            success: true,
+            data: {
+                cat: cat,
+            },
+        });
+    }
+    catch (error) {
+        res.status(400).send({
+            success: false,
+            error: error.message,
+        });
+    }
 });
 app.use(function (req, res, next) {
     console.log("this is Error Mid");
