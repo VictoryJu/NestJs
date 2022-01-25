@@ -56,4 +56,73 @@ router.post('/cat',(req,res)=>{
   }
 })
 
+//* UPDATE 고양이 데이터 업데이트 -> PUT
+router.put('/cat/:id',(req,res)=>{
+  try{
+    const id = req.params.id;
+    const data = req.body;
+    let result;
+    Cat.forEach(item=>{
+      if(item.id === id){
+        item = data;
+        result = item;
+      }
+    });
+    res.status(200).send({
+      success: true,
+      data:{
+        cat:result
+      }
+    })
+  }catch(e:any){
+    res.send({
+      success: false,
+      error: e.error.message
+    })
+  }
+})
+//* UPDATE 고양이 데이터 부분적 업데이트 -> PATCH
+router.put('/cat/:id',(req,res)=>{
+  try{
+    const id = req.params.id;
+    const data = req.body;
+    let result;
+    Cat.forEach(item=>{
+      if(item.id === id){
+        item = {...item,...data}; //기존 키에서 중복된 키의 벨류값을 바꿔준다
+        result = item;
+      }
+    });
+    res.status(200).send({
+      success: true,
+      data:{
+        cat:result
+      }
+    })
+  }catch(e:any){
+    res.send({
+      success: false,
+      error: e.error.message
+    })
+  }
+})
+//* DELETE 고양이 데이터 삭제 -> DELETE
+router.delete('/cat/:id',(req,res)=>{
+  try{
+    const id = req.params.id;
+    const newCat = Cat.filter(cat=>{
+      return cat.id !== id
+    })
+    res.status(200).send({
+      success: true,
+      data: newCat
+    })
+  }catch(e:any){
+    res.send({
+      success: false,
+      error: e.error.message
+    })
+  }
+})
+
 export default router;
