@@ -23,11 +23,17 @@ var Server = (function () {
             res.send({ error: "404 not found error" });
         });
     };
+    Server.prototype.listen = function () {
+        this.setMiddleware();
+        this.app.listen(8000, function () {
+            console.log("server is on 8000");
+        });
+    };
     return Server;
 }());
-var app = express();
-var port = 8000;
-app.listen(port, function () {
-    console.log("server is on " + port);
-});
+function init() {
+    var server = new Server();
+    server.listen();
+}
+init();
 //# sourceMappingURL=app.js.map

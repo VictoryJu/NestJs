@@ -23,21 +23,28 @@ class Server{
 
     //* json middleware
     this.app.use(express.json());
-    
+
     this.setRoute();
     //* 404 middleware
     this.app.use((req,res,next)=>{
       console.log("this is Error Mid");
       res.send({error: "404 not found error"});
       });
-    }
+  }
+
+  public listen(){
+    this.setMiddleware();
+    this.app.listen(8000, () => {
+      console.log(`server is on 8000`)
+    })
+  }
 }
 
-const app:express.Express = express();
+function init(){
+  const server = new Server()
+  server.listen();
+}
 
-const port:number = 8000;
+init();
 
 
-app.listen(port, () => {
-  console.log(`server is on ${port}`)
-})
